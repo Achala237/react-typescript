@@ -13,7 +13,7 @@ export interface State {
 }
 
 
-const initialState :State = {
+let initialState :State = {
   login: {
     userName: '',
     passWord: ''
@@ -25,8 +25,8 @@ const initialState :State = {
 export const reducer = (state = initialState, action:Action) => {
   if (action.type === 'SIGNIN') {
     return {
-      ...state,
-      login : action.login
+      ...state.login,
+      login: action.login
     };
   }
   return state;

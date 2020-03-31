@@ -8,12 +8,12 @@ interface Props {
 }
 
 
-interface Login {
+interface ILogin {
     userName:string;
     passWord:string
 }
 interface State {
-   login : Login
+   login : ILogin
 }
 
 
@@ -58,12 +58,12 @@ class Login extends React.Component<Props,State> {
 //     userName: String,
 //     password : String
 // }
-// const mapStateToProps = (state : any) => {
-// return {
-//     userName:state.login.userName,
-//     passWord:state.login.passWord
-// }
-// }
+const mapStateToProps = (state : any) => {
+return {
+    userName:state.login.userName,
+    passWord:state.login.passWord
+}
+}
 
 
 // interface DispatchProps {
@@ -72,9 +72,9 @@ class Login extends React.Component<Props,State> {
 
 const mapDispatchToProps = (dispatch :any) => {
 return {
-     onSignIn : (userName : String, passWord:String) => dispatch({type:'SIGNIN', userName:userName, password: passWord})  
+     onSignIn : (userName : String, passWord:String) => dispatch({type:'SIGNIN', login :{userName:userName, password: passWord}})  
 }
 }
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 
