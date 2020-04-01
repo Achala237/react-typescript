@@ -6,9 +6,16 @@ interface Props {
 }
 
 class TaskList extends React.Component<Props> {
+
     render () {
+        const taskListData = this.props.taskList.map((task:any) => {
+        return <span>{task.taskName} : {task.priority}</span>;
+        })
         return (
-            <span>TaskList</span>
+            <div>
+            <h2>TaskList</h2>
+            {taskListData}
+            </div> 
             )
         }
     }
