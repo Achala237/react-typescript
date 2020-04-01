@@ -1,0 +1,10 @@
+.Login {
+    width: 350px;
+    height: 200px;
+    margin: auto;
+    border-radius: 20px;
+    box-shadow: 0 2px 1px #ccc;
+    border: 1px solid #ccc;
+    text-align: center;
+
+}

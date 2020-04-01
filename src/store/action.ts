@@ -1,6 +1,9 @@
 export interface SignIn {
-    type:"SIGNIN",
+    type:String,
     login:{ userName:String, passWord:String}
 }
-
-export type Action = SignIn;
+export interface Task {
+    type:String,
+    task:{ taskName:String, priority:String}
+}
+export type Action = SignIn | Task;

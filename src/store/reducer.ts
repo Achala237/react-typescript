@@ -1,5 +1,5 @@
 
-import {Action} from './action';
+// import {Action} from './action';
 
 export interface Login {
   userName:String,
@@ -9,7 +9,7 @@ export interface Login {
 
 export interface State {
  login:Login,
- taskList: any[]
+ taskList: any
 }
 
 
@@ -22,11 +22,17 @@ let initialState :State = {
 };
 
 
-export const reducer = (state = initialState, action:Action) => {
+export const reducer = (state = initialState, action:any) => {
   if (action.type === 'SIGNIN') {
     return {
-      ...state.login,
+      ...state,
       login: action.login
+    };
+  }
+  if (action.type === 'ADDTASK') {
+    return {
+      ...state,
+      taskList: [...action.task]
     };
   }
   return state;

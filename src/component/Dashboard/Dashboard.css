@@ -1,0 +1,9 @@
+.Dashboard {
+    width: 30%;
+    height: 60%;
+    margin:  auto;
+    border-radius: 20px;
+    box-shadow: 0 2px 1px #ccc;
+    border: 1px solid #ccc;
+    text-align: center;
+}
