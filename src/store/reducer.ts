@@ -1,5 +1,5 @@
 
-// import {Action} from './action';
+import * as types from './actionTypes'
 
 export interface Login {
   userName:String,
@@ -24,25 +24,24 @@ let initialState :State = {
 
 export const reducer = (state = initialState, action:any) => {
   switch (action.type) {
-    case 'SIGNIN':
+    case types.SIGNIN:
       return {
         ...state,
         login: action.login
       };
-    case 'ADDTASK' : 
+    case types.ADDTASK : 
     return {
       ...state,
       taskList: [...state.taskList, ...action.task]
     };
-    case 'DELETETASK': 
+    case types.DELETETASK: 
     return {
       ...state,
       taskList: state.taskList.filter((task:any) => {
         return task.id !== action.id;
       })
     };
-    case 'UPDATETASK': 
-    console.log('updated task ---',action.task)
+    case types.UPDATETASK: 
     return {
      ...state,
      taskList:  state.taskList.map((task:any) => (

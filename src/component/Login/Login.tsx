@@ -2,7 +2,7 @@ import React from 'react';
 import { connect} from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import './Login.css'
-
+import * as actions from  '../../store/actions'
 
 interface Props {
     onSignIn: (login:ILogin) => void;
@@ -129,7 +129,7 @@ class Login extends React.Component<Props,State> {
 
 const mapDispatchToProps = (dispatch :any) => {
 return {
-     onSignIn : (login:ILogin) => dispatch({type:'SIGNIN', login:login})
+     onSignIn : (login:ILogin) => dispatch(actions.signIn(login))
 }
 }
 export default connect(null, mapDispatchToProps)(Login);

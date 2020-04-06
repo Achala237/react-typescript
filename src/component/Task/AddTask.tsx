@@ -2,11 +2,12 @@ import React from 'react';
 import './AddTask.css'
 import { connect} from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import * as actions from '../../store/actions';
 
 
 interface Task {
-    taskName:String,
-    priority:String,
+    taskName:string,
+    priority:string,
     id:any
 }
 interface Props {
@@ -27,9 +28,9 @@ class AddTask extends React.Component<Props,State> {
         super(props);
         this.state={
             task: {
-                taskName:'',
-                priority:'',
-                id:0
+                taskName:this.props.currentTask? this.props.currentTask.taskName : '',
+                priority:this.props.currentTask? this.props.currentTask.priority : '',
+                id:this.props.currentTask? this.props.currentTask.id: ''
             },
             isSubmitted:false
         }
@@ -66,7 +67,7 @@ class AddTask extends React.Component<Props,State> {
 
           getTaskId() {
             let taskId = 1;
-            const currentTaskId = (this.props.currentTask && this.props.currentTask.id) || null;
+            const currentTaskId = (this.state.task.id) || null;
            const taskList = this.props.taskList;
            if(taskList.length > 0 && !currentTaskId) {
             const lastId = taskList.length;
@@ -86,12 +87,12 @@ class AddTask extends React.Component<Props,State> {
                 <h3> {this.props.currentTask? 'Update' : 'Add'} Task</h3>
                 <form>
                     <label>
-                        TaskName : <input name="taskName"  type="text" placeholder="Enter Task Name" value={this.props.currentTask? this.props.currentTask.taskName: ''} onChange={this.handleInputChange}/>
+                        TaskName : <input name="taskName"  type="text" placeholder="Enter Task Name" value={this.state.task.taskName} onChange={this.handleInputChange}/>
                     </label>
                     <br></br>
                     <br></br>
                     <label>
-                        Priority : <select name="priority" value={this.props.currentTask? this.props.currentTask.priority: ''} onChange={this.handleInputChange}>
+                        Priority : <select name="priority" value={this.state.task.priority}  onChange={this.handleInputChange}>
                             <option value="">Select</option>
                             <option value="L">Low</option>
                             <option value="M">Medium</option>
@@ -100,7 +101,7 @@ class AddTask extends React.Component<Props,State> {
                     </label>
                     <br></br>
                     <br></br>
-        <button onClick={this.onAddTask}>{this.props.currentTask? 'Update' : 'Submit'}</button>
+        <button onClick={this.onAddTask}>{this.props.currentTask? 'Update' : 'Add'} Task</button>
                     <br></br>
                     <br></br>
                 </form>
@@ -125,8 +126,8 @@ const mapStateToProps = (state : any, ownProps:any) => {
     }
 const mapDispatchToProps = (dispatch :any) => {
     return {
-         addTask : (task:Task) => dispatch({type:'ADDTASK', task:[task]}),
-         updatedTask : (task:Task) => dispatch({type:'UPDATETASK', task:task})
+         addTask : (task:Task) => dispatch(actions.addTask([task])),
+         updatedTask : (task:Task) => dispatch(actions.updateTask(task))
 
     }
     }
