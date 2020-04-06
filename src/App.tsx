@@ -9,8 +9,9 @@ function App() {
     <BrowserRouter>
     <Route path='/' exact component={Login}></Route>
     <Route path='/dashboard' exact component={Dashboard} />
-    <Route path="/addTask"  component={AddTask}/>
-    <Route path="/viewTasks"  component={TaskList}/>
+    <Route path="/addTask" exact component={AddTask}/>
+    <Route path="/viewTasks" exact component={TaskList}/>
+    <Route path="/editTask/:id" exact component={AddTask}/>
     </BrowserRouter>
   );
 }

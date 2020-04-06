@@ -1,6 +1,6 @@
 export interface SignIn {
     type:String,
-    login:{ userName:String, passWord:String}
+    login:{ userName:String, password:String}
 }
 export interface Task {
     type:String,

@@ -6,10 +6,14 @@ import { Redirect } from 'react-router-dom';
 
 interface Task {
     taskName:String,
-    priority:String
+    priority:String,
+    id:any
 }
 interface Props {
-    addTask: (task:Task) => void;
+    addTask: (task:Task) => void,
+    taskList: any,
+    currentTask: any
+    updatedTask: (task:Task) => void
 
 }
 
@@ -24,7 +28,8 @@ class AddTask extends React.Component<Props,State> {
         this.state={
             task: {
                 taskName:'',
-                priority:''
+                priority:'',
+                id:0
             },
             isSubmitted:false
         }
@@ -42,8 +47,32 @@ class AddTask extends React.Component<Props,State> {
 
         onAddTask (e:any) {
             e.preventDefault();
-            this.props.addTask(this.state.task);
-            this.setState( { isSubmitted: true } );
+            const updatedTask = {
+                ...this.state.task,
+                id:this.getTaskId()
+            }
+            this.setState(
+                () => ({ isSubmitted: true , task:updatedTask}),
+                () => {
+                    this.props.currentTask ? this.props.updatedTask(this.state.task):
+                    this.props.addTask(this.state.task);
+                }
+              );
+            this.setState((prevState, props)=> { 
+                return  {isSubmitted: true , task:updatedTask}
+            });
+
+          }
+
+          getTaskId() {
+            let taskId = 1;
+            const currentTaskId = (this.props.currentTask && this.props.currentTask.id) || null;
+           const taskList = this.props.taskList;
+           if(taskList.length > 0 && !currentTaskId) {
+            const lastId = taskList.length;
+            taskId = lastId + 1;
+           }
+           return  currentTaskId? currentTaskId :taskId;
           }
 
     render() {
@@ -54,23 +83,24 @@ class AddTask extends React.Component<Props,State> {
         return (
             <div className="AddTask">
             {redirect}
-                <h3>Add Task</h3>
+                <h3> {this.props.currentTask? 'Update' : 'Add'} Task</h3>
                 <form>
                     <label>
-                        TaskName : <input name="taskName" type="text" placeholder="Enter Task Name" onChange={this.handleInputChange}/>
+                        TaskName : <input name="taskName"  type="text" placeholder="Enter Task Name" value={this.props.currentTask? this.props.currentTask.taskName: ''} onChange={this.handleInputChange}/>
                     </label>
                     <br></br>
                     <br></br>
                     <label>
-                        Priority : <select name="priority" value="L" onChange={this.handleInputChange}>
+                        Priority : <select name="priority" value={this.props.currentTask? this.props.currentTask.priority: ''} onChange={this.handleInputChange}>
+                            <option value="">Select</option>
                             <option value="L">Low</option>
                             <option value="M">Medium</option>
-                            <option value="H">Heigh</option>
+                            <option value="H">High</option>
                         </select>
                     </label>
                     <br></br>
                     <br></br>
-                    <button onClick={this.onAddTask}>Submit</button>
+        <button onClick={this.onAddTask}>{this.props.currentTask? 'Update' : 'Submit'}</button>
                     <br></br>
                     <br></br>
                 </form>
@@ -79,9 +109,25 @@ class AddTask extends React.Component<Props,State> {
     }
 }
 
+function getTask(taskList : any[], id:any) {
+ if(id && taskList) {
+ return taskList.find(task=>{
+      return parseInt(task.id) === parseInt(id);
+  })
+ }
+}
+const mapStateToProps = (state : any, ownProps:any) => {
+    const currentTask = getTask(state.taskList , ownProps.match.params.id);
+    return {
+        currentTask,
+        taskList:state.taskList
+    }
+    }
 const mapDispatchToProps = (dispatch :any) => {
     return {
-         addTask : (task:Task) => dispatch({type:'ADDTASK', task:[task]})
+         addTask : (task:Task) => dispatch({type:'ADDTASK', task:[task]}),
+         updatedTask : (task:Task) => dispatch({type:'UPDATETASK', task:task})
+
     }
     }
-export default connect(null,mapDispatchToProps)(AddTask);
+export default connect(mapStateToProps,mapDispatchToProps)(AddTask);

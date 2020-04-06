@@ -11,7 +11,7 @@ export class Dashboard extends React.Component {
                <Header></Header>
                <div className="Dashboard">
                <h1>Dashboard</h1>
-                <Link to="/addTask">Add Tasks</Link>
+                <Link to="/addTask">Add Tasks</Link> 
                <Link to="/viewTasks">View Tasks</Link>
                </div>
              </React.Fragment>

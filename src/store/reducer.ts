@@ -23,17 +23,33 @@ let initialState :State = {
 
 
 export const reducer = (state = initialState, action:any) => {
-  if (action.type === 'SIGNIN') {
+  switch (action.type) {
+    case 'SIGNIN':
+      return {
+        ...state,
+        login: action.login
+      };
+    case 'ADDTASK' : 
     return {
       ...state,
-      login: action.login
+      taskList: [...state.taskList, ...action.task]
     };
-  }
-  if (action.type === 'ADDTASK') {
+    case 'DELETETASK': 
     return {
       ...state,
-      taskList: [...action.task]
+      taskList: state.taskList.filter((task:any) => {
+        return task.id !== action.id;
+      })
     };
+    case 'UPDATETASK': 
+    console.log('updated task ---',action.task)
+    return {
+     ...state,
+     taskList:  state.taskList.map((task:any) => (
+      task.id === action.task.id ? action.task :task
+  ))
+     }
+    default:
+      return state;
   }
-  return state;
 };
